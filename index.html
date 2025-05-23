@@ -219,6 +219,7 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            font-size: 1.5rem;
         }
 
         .nav-link:hover {
@@ -325,6 +326,35 @@
             font-size: 1.2rem;
             color: #d4a373;
         }
+
+        /* Tooltip for navbar icons */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -342,17 +372,21 @@
         <div class="nav-container">
             <div class="nav-logo">C & NN</div>
             <div class="nav-links">
-                <a href="#info" class="nav-link" onclick="smoothScroll('info')">
-                    <i class="fas fa-info-circle"></i> Informações
+                <a href="#info" class="nav-link tooltip" onclick="smoothScroll('info')">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltiptext">Informações</span>
                 </a>
-                <a href="#dress-code" class="nav-link" onclick="smoothScroll('dress-code')">
-                    <i class="fas fa-tshirt"></i> Dress Code
+                <a href="#dress-code" class="nav-link tooltip" onclick="smoothScroll('dress-code')">
+                    <i class="fas fa-tshirt"></i>
+                    <span class="tooltiptext">Dress Code</span>
                 </a>
-                <a href="#gifts" class="nav-link" onclick="smoothScroll('gifts')">
-                    <i class="fas fa-gift"></i> Presentes
+                <a href="#gifts" class="nav-link tooltip" onclick="smoothScroll('gifts')">
+                    <i class="fas fa-gift"></i>
+                    <span class="tooltiptext">Presentes</span>
                 </a>
-                <a href="#guests" class="nav-link" onclick="smoothScroll('guests')">
-                    <i class="fas fa-users"></i> Convidados
+                <a href="#guests" class="nav-link tooltip" onclick="smoothScroll('guests')">
+                    <i class="fas fa-users"></i>
+                    <span class="tooltiptext">Convidados</span>
                 </a>
             </div>
         </div>
