@@ -13,6 +13,7 @@
             font-family: 'Montserrat', sans-serif;
             background-color: #faf7f2;
             color: #333;
+            overflow-x: hidden;
         }
         
         .title-font {
@@ -173,9 +174,195 @@
             height: 3px;
             background: linear-gradient(to right, #d4a373, #f8edeb);
         }
+
+        /* Navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar.show {
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #d4a373;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #d4a373;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d4a373;
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        /* Welcome overlay */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: opacity 1s ease;
+        }
+
+        .welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .welcome-subtitle {
+            color: #d4a373;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 600px;
+            padding: 0 1rem;
+        }
+
+        .enter-button {
+            background-color: #d4a373;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .enter-button:hover {
+            background-color: #b38a5f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Music control */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .music-control.show {
+            opacity: 1;
+        }
+
+        .music-control i {
+            font-size: 1.2rem;
+            color: #d4a373;
+        }
     </style>
 </head>
 <body>
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcome-overlay">
+        <h1 class="welcome-title">Cleverson & Noemi Nayara</h1>
+        <p class="welcome-subtitle">Convidamos você para celebrar conosco o início desta nova jornada no dia 27 de Junho de 2025</p>
+        <button class="enter-button" id="enter-button">
+            <i class="fas fa-heart"></i> Acessar Convite
+        </button>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">C & NN</div>
+            <div class="nav-links">
+                <a href="#info" class="nav-link" onclick="smoothScroll('info')">
+                    <i class="fas fa-info-circle"></i> Informações
+                </a>
+                <a href="#dress-code" class="nav-link" onclick="smoothScroll('dress-code')">
+                    <i class="fas fa-tshirt"></i> Dress Code
+                </a>
+                <a href="#gifts" class="nav-link" onclick="smoothScroll('gifts')">
+                    <i class="fas fa-gift"></i> Presentes
+                </a>
+                <a href="#guests" class="nav-link" onclick="smoothScroll('guests')">
+                    <i class="fas fa-users"></i> Convidados
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Music Control -->
+    <div class="music-control" id="music-control">
+        <i class="fas fa-music"></i>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero min-h-screen flex items-center justify-center text-white text-center px-4">
         <div>
@@ -193,14 +380,14 @@
             <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Nossa História</h2>
             
             <div class="flex flex-col md:flex-row items-center justify-center gap-12 mb-16">
-				<div class="text-center">
+                <div class="text-center">
                     <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-lg">
                         <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=761&q=80" alt="Noiva" class="w-full h-full object-cover">
                     </div>
                     <h3 class="title-font text-2xl mb-2">Noemi Nayara</h3>
                     <p class="max-w-xs mx-auto">"Você foi o inesperado mais esperado da minha vida. EU TE AMO❤️"</p>
                 </div>
-			
+            
                 <div class="text-center">
                     <div class="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden mx-auto mb-6 border-4 border-white shadow-lg">
                         <img src="https://images.unsplash.com/photo-1583864697784-a0efc8379f70?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="Noivo" class="w-full h-full object-cover">
@@ -208,17 +395,12 @@
                     <h3 class="title-font text-2xl mb-2">Cleverson</h3>
                     <p class="max-w-xs mx-auto">"A espera acabou, EU TE AMO ❤️"</p>
                 </div>
-            </div>
-            
-            <div class="max-w-3xl mx-auto text-center">
-                <p class="mb-6">Nos conhecemos em 2018 durante uma viagem de amigos. Desde o primeiro olhar, sentimos uma conexão especial que só cresceu com o tempo.</p>
-                <p>Depois de anos de amor, risadas e aprendizados juntos, decidimos oficializar nossa união no dia 27 de Junho de 2025, e queremos compartilhar este momento tão especial com você!</p>
-            </div>
+            </div>            
         </div>
     </section>
 
     <!-- Event Details -->
-    <section class="py-20 bg-gray-50 px-4">
+    <section class="py-20 bg-gray-50 px-4" id="info">
         <div class="max-w-6xl mx-auto">
             <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Detalhes do Evento</h2>
             
@@ -293,12 +475,12 @@
     </section>
     
     <!-- Dress Code Section -->
-    <section class="py-20 px-4 bg-gray-50">
+    <section class="py-20 px-4 bg-gray-50" id="dress-code">
         <div class="max-w-6xl mx-auto">
             <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Dress Code</h2>
             
             <div class="text-center max-w-2xl mx-auto mb-8">
-                <p>Para harmonizar com o nosso tema, recomendamos que os convidados utilizem tons de verde oliva em suas roupas.</p>
+                <p>Para harmonizar com o nosso tema, recomendamos que os convidados utilizem tons de verde em suas roupas.</p>
             </div>
 
             <div class="color-palette">
@@ -313,7 +495,7 @@
             </div>
 
             <div class="text-center mt-8 max-w-2xl mx-auto">
-                <p>Qualquer um desses tons de verde oliva será perfeito para a nossa celebração!</p>
+                <p>Qualquer um desses tons de verde será perfeito para a nossa celebração!</p>
                 <p class="mt-2 text-sm text-gray-600">Sugestão: Combine com calças sociais em tons neutros como bege, marrom ou cinza.</p>
             </div>
         </div>
@@ -583,7 +765,6 @@
             
             // Close modal and refresh gift list
             closeModal();
-            alert(`Obrigado, ${giverName}! Seu presente foi registrado com sucesso.`);
             
             // Refresh the gift list to show the reservation
             const giftButtons = document.querySelectorAll(`button[onclick="openModal(${giftId})"]`);
@@ -635,19 +816,112 @@
             // Scroll to guest list section
             document.getElementById('guests').scrollIntoView({ behavior: 'smooth' });
         });
-		
-		// Smooth scroll function
-		function smoothScroll(targetId) {
-			const targetElement = document.getElementById(targetId);
-			if (targetElement) {
-				targetElement.scrollIntoView({
-					behavior: 'smooth'
-				});
-			}
-			
-			// Prevent default anchor behavior
-			return false;
-		}
+        
+        // Smooth scroll function
+        function smoothScroll(targetId) {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Prevent default anchor behavior
+            return false;
+        }
+
+        // Welcome overlay and music functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeOverlay = document.getElementById('welcome-overlay');
+            const enterButton = document.getElementById('enter-button');
+            const navbar = document.getElementById('navbar');
+            const musicControl = document.getElementById('music-control');
+            
+            // List of wedding-themed music (you can replace these with your own)
+            const weddingSongs = [
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+                'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+            ];
+            
+            // Create audio element
+            const audio = new Audio();
+            let isPlaying = false;
+            
+            // Randomly select a song
+            function playRandomWeddingSong() {
+                const randomSong = weddingSongs[Math.floor(Math.random() * weddingSongs.length)];
+                audio.src = randomSong;
+                audio.loop = true;
+                audio.volume = 0.5; // Set volume to 50%
+                audio.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                    })
+                    .catch(error => {
+                        console.log('Autoplay prevented:', error);
+                        // Show play button to allow user to start music manually
+                        musicControl.classList.add('show');
+                    });
+            }
+            
+            // Enter button click handler
+            enterButton.addEventListener('click', function() {
+                // Hide welcome overlay
+                welcomeOverlay.classList.add('hidden');
+                
+                // Show navbar
+                setTimeout(() => {
+                    navbar.classList.add('show');
+                }, 500);
+                
+                // Play music
+                playRandomWeddingSong();
+                
+                // Show music control after a delay
+                setTimeout(() => {
+                    musicControl.classList.add('show');
+                }, 1000);
+            });
+            
+            // Music control click handler
+            musicControl.addEventListener('click', function() {
+                if (isPlaying) {
+                    audio.pause();
+                    musicControl.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    audio.play()
+                        .then(() => {
+                            musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                        })
+                        .catch(error => {
+                            console.log('Playback failed:', error);
+                        });
+                }
+                isPlaying = !isPlaying;
+            });
+            
+            // Check if user has already entered (for page refresh)
+            if (localStorage.getItem('hasEntered')) {
+                welcomeOverlay.classList.add('hidden');
+                navbar.classList.add('show');
+                playRandomWeddingSong();
+                musicControl.classList.add('show');
+            } else {
+                localStorage.setItem('hasEntered', 'true');
+            }
+            
+            // Close welcome overlay if user has already seen it
+            const hasSeenWelcome = sessionStorage.getItem('hasSeenWelcome');
+            if (hasSeenWelcome) {
+                welcomeOverlay.classList.add('hidden');
+                navbar.classList.add('show');
+                musicControl.classList.add('show');
+            } else {
+                sessionStorage.setItem('hasSeenWelcome', 'true');
+            }
+        });
     </script>
 </body>
 </html>
