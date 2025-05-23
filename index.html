@@ -936,25 +936,7 @@
                 isPlaying = !isPlaying;
             });
             
-            // Check if user has already entered (for page refresh)
-            if (localStorage.getItem('hasEntered')) {
-                welcomeOverlay.classList.add('hidden');
-                navbar.classList.add('show');
-                playRandomWeddingSong();
-                musicControl.classList.add('show');
-            } else {
-                localStorage.setItem('hasEntered', 'true');
-            }
-            
-            // Close welcome overlay if user has already seen it
-            const hasSeenWelcome = sessionStorage.getItem('hasSeenWelcome');
-            if (hasSeenWelcome) {
-                welcomeOverlay.classList.add('hidden');
-                navbar.classList.add('show');
-                musicControl.classList.add('show');
-            } else {
-                sessionStorage.setItem('hasSeenWelcome', 'true');
-            }
+
         });
     </script>
 </body>
