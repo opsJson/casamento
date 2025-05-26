@@ -420,6 +420,93 @@ body {
     .scroll-down:hover {
         opacity: 0.8;
     }
+
+    /* Carousel styles */
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        margin: 0 auto;
+    }
+
+    .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease;
+        padding: 20px 0;
+    }
+
+    .carousel-item {
+        min-width: 250px;
+        margin: 0 10px;
+        flex: 0 0 auto;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .carousel-btn:hover {
+        background: white;
+    }
+
+    .carousel-btn.prev {
+        left: 10px;
+    }
+
+    .carousel-btn.next {
+        right: 10px;
+    }
+
+    .carousel-btn i {
+        color: #d4a373;
+        font-size: 1.2rem;
+    }
+
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ccc;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .carousel-dot.active {
+        background: #d4a373;
+    }
+
+    @media (min-width: 768px) {
+        .carousel-item {
+            min-width: calc(33.333% - 20px);
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .carousel-item {
+            min-width: calc(25% - 20px);
+        }
+    }
 	</style>
 </head>
 <body>
@@ -637,8 +724,19 @@ body {
             <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Lista de Presentes</h2>
             <p class="text-center max-w-2xl mx-auto mb-12">Se você deseja nos presentear, aqui estão algumas sugestões que nos deixariam muito felizes. Cada presente é um passo em nossa nova vida juntos.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="gift-list">
-                <!-- Gift items will be inserted here by JavaScript -->
+            <div class="carousel-container relative">
+                <div class="carousel-track" id="gift-carousel">
+                    <!-- Gift items will be inserted here by JavaScript -->
+                </div>
+                <button class="carousel-btn prev" onclick="moveGiftCarousel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" onclick="moveGiftCarousel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-dots" id="gift-dots">
+                    <!-- Dots will be added by JavaScript -->
+                </div>
             </div>
         </div>
     </section>
@@ -665,8 +763,19 @@ body {
             <h2 class="title-font text-3xl md:text-4xl text-center mb-12 section-title">Convidados Confirmados</h2>
             <p class="text-center max-w-2xl mx-auto mb-12">Estamos felizes em compartilhar este momento especial com essas pessoas queridas.</p>
             
-            <div class="guest-list" id="guest-list-container">
-                <!-- Guest cards will be inserted here by JavaScript -->
+            <div class="carousel-container relative">
+                <div class="carousel-track" id="guest-carousel">
+                    <!-- Guest cards will be inserted here by JavaScript -->
+                </div>
+                <button class="carousel-btn prev" onclick="moveGuestCarousel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn next" onclick="moveGuestCarousel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <div class="carousel-dots" id="guest-dots">
+                    <!-- Dots will be added by JavaScript -->
+                </div>
             </div>
         </div>
     </section>
@@ -741,67 +850,67 @@ const gifts = [
 		image: "presentes/maquina de lavar.png"
 	},
 	{
-		id: 8,
+		id: 9,
 		name: "Geladeira",
 		image: "presentes/geladeira.png"
 	},
 	{
-		id: 9,
+		id: 10,
 		name: "Jarra de Suco",
 		image: "presentes/jarra.png"
 	},
 	{
-		id: 10,
+		id: 11,
 		name: "Grill",
 		image: "presentes/grill.png"
 	},
 	{
-		id: 11,
+		id: 12,
 		name: "Aspirador de pó",
 		image: "presentes/aspirador de po.png"
 	},
 	{
-		id: 12,
+		id: 13,
 		name: "Ferro de passar",
 		image: "presentes/ferro de passar.png"
 	},
 	{
-		id: 13,
+		id: 14,
 		name: "Edredom",
 		image: "presentes/edredom.png"
 	},
 	{
-		id: 14,
+		id: 15,
 		name: "Ventilador",
 		image: "presentes/ventilador.png"
 	},
 	{
-		id: 15,
+		id: 16,
 		name: "Purificador de Água",
 		image: "presentes/purificador.png"
 	},
 	{
-		id: 16,
+		id: 17,
 		name: "Sanduicheira",
 		image: "presentes/sanduicheira.png"
 	},
 	{
-		id: 17,
+		id: 18,
 		name: "Panela de Arroz",
 		image: "presentes/arroz.png"
 	},
 	{
-		id: 18,
+		id: 19,
 		name: "Panela de Pressão",
 		image: "presentes/panela de pressao.png"
 	},
 	{
-		id: 19,
+		id: 20,
 		name: "Frigideira",
 		image: "presentes/frigideira.png"
 	},
 	{
-		id: 20,
+		id: 21,
 		name: "Potes Hermêticos",
 		image: "presentes/hermeticos.png"
 	},
@@ -813,78 +922,185 @@ let giftReservations = JSON.parse(localStorage.getItem('giftReservations')) || {
 // Load guest list from localStorage
 let rsvpList = JSON.parse(localStorage.getItem('rsvpList')) || [];
 
-// Render gift list
-const giftListContainer = document.getElementById('gift-list');
+// Carousel state
+let currentGiftIndex = 0;
+let currentGuestIndex = 0;
+let itemsPerSlide = 1; // Will be updated based on screen size
 
-gifts.forEach(gift => {
-	const isReserved = giftReservations[gift.id];
-	
-	const giftItem = document.createElement('div');
-	giftItem.className = 'gift-item bg-white rounded-lg overflow-hidden shadow-md transition duration-300';
-	giftItem.innerHTML = `
-		<img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
-		<div class="p-6">
-			<h3 class="title-font text-xl mb-2">${gift.name}</h3>
-			${isReserved ? 
-				`<p class="text-green-600 mb-2">Reservado por ${isReserved.giverName}</p>
-				 <button onclick="openModal(${gift.id})" class="mt-2 inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed" disabled>Presenteado</button>` :
-				`<button onclick="openModal(${gift.id})" class="mt-4 inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition duration-300">Presentear</button>`
-			}
-		</div>
-	`;
-	giftListContainer.appendChild(giftItem);
-});
-
-// Render guest list
-function renderGuestList() {
-	const guestListContainer = document.getElementById('guest-list-container');
-	guestListContainer.innerHTML = '';
-	
-	// Filter only guests who confirmed attendance
-	const confirmedGuests = rsvpList;
-	
-	if (confirmedGuests.length === 0) {
-		guestListContainer.innerHTML = `
-			<div class="no-guests">
-				<i class="fas fa-heart-broken text-4xl text-gray-400 mb-4"></i>
-				<p>Ainda não temos confirmações. Seja o primeiro a confirmar!</p>
-			</div>
-		`;
-		return;
-	}
-	
-	confirmedGuests.forEach(guest => {
-		const guestCard = document.createElement('div');
-		guestCard.className = 'guest-card';
-		
-		// Randomly select an icon for variety
-		const icons = ['fa-heart', 'fa-glass-cheers', 'fa-smile', 'fa-star', 'fa-gem'];
-		const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-		
-		// Format date
-		const date = new Date(guest.date);
-		const formattedDate = date.toLocaleDateString('pt-BR', { 
-			day: '2-digit', 
-			month: '2-digit', 
-			year: 'numeric',
-			hour: '2-digit',
-			minute: '2-digit'
-		});
-		
-		guestCard.innerHTML = `
-			<div class="guest-icon">
-				<i class="fas ${randomIcon}"></i>
-			<div>
-			<h3 class="guest-name">${guest.name}</h3>
-			<p class="guest-date">Confirmado em ${formattedDate}</p>
-		`;
-		
-		guestListContainer.appendChild(guestCard);
-	});
+// Update items per slide based on screen size
+function updateItemsPerSlide() {
+    if (window.innerWidth >= 1024) {
+        itemsPerSlide = 4;
+    } else if (window.innerWidth >= 768) {
+        itemsPerSlide = 3;
+    } else {
+        itemsPerSlide = 1;
+    }
 }
 
-// Initial render of guest list
-renderGuestList();
+// Initialize carousels
+function initCarousels() {
+    updateItemsPerSlide();
+    renderGiftCarousel();
+    renderGuestCarousel();
+}
+
+// Render gift carousel
+function renderGiftCarousel() {
+    const giftCarousel = document.getElementById('gift-carousel');
+    const giftDots = document.getElementById('gift-dots');
+    
+    giftCarousel.innerHTML = '';
+    giftDots.innerHTML = '';
+    
+    const totalSlides = Math.ceil(gifts.length / itemsPerSlide);
+    
+    gifts.forEach((gift, index) => {
+        const isReserved = giftReservations[gift.id];
+        
+        const giftItem = document.createElement('div');
+        giftItem.className = 'carousel-item';
+        giftItem.innerHTML = `
+            <div class="gift-item bg-white rounded-lg overflow-hidden shadow-md transition duration-300 h-full mx-2">
+                <img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="title-font text-xl mb-2">${gift.name}</h3>
+                    ${isReserved ? 
+                        `<p class="text-green-600 mb-2">Reservado por ${isReserved.giverName}</p>
+                         <button onclick="openModal(${gift.id})" class="mt-2 inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed" disabled>Presenteado</button>` :
+                        `<button onclick="openModal(${gift.id})" class="mt-4 inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition duration-300">Presentear</button>`
+                    }
+                </div>
+            </div>
+        `;
+        giftCarousel.appendChild(giftItem);
+    });
+    
+    // Create dots
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+        dot.onclick = () => {
+            currentGiftIndex = i;
+            updateGiftCarousel();
+        };
+        giftDots.appendChild(dot);
+    }
+    
+    updateGiftCarousel();
+}
+
+// Move gift carousel
+function moveGiftCarousel(direction) {
+    const totalSlides = Math.ceil(gifts.length / itemsPerSlide);
+    currentGiftIndex = (currentGiftIndex + direction + totalSlides) % totalSlides;
+    updateGiftCarousel();
+}
+
+// Update gift carousel position
+function updateGiftCarousel() {
+    const giftCarousel = document.getElementById('gift-carousel');
+    const giftDots = document.querySelectorAll('#gift-dots .carousel-dot');
+    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
+    
+    giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemsPerSlide * itemWidth}px)`;
+    
+    // Update dots
+    giftDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentGiftIndex);
+    });
+}
+
+// Render guest carousel
+function renderGuestCarousel() {
+    const guestCarousel = document.getElementById('guest-carousel');
+    const guestDots = document.getElementById('guest-dots');
+    
+    guestCarousel.innerHTML = '';
+    guestDots.innerHTML = '';
+    
+    // Filter only guests who confirmed attendance
+    const confirmedGuests = rsvpList;
+    const totalSlides = Math.ceil(confirmedGuests.length / itemsPerSlide);
+    
+    if (confirmedGuests.length === 0) {
+        guestCarousel.innerHTML = `
+            <div class="no-guests carousel-item w-full">
+                <i class="fas fa-heart-broken text-4xl text-gray-400 mb-4"></i>
+                <p>Ainda não temos confirmações. Seja o primeiro a confirmar!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    confirmedGuests.forEach((guest, index) => {
+        const guestCard = document.createElement('div');
+        guestCard.className = 'carousel-item';
+        
+        // Randomly select an icon for variety
+        const icons = ['fa-heart', 'fa-glass-cheers', 'fa-smile', 'fa-star', 'fa-gem'];
+        const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+        
+        // Format date
+        const date = new Date(guest.date);
+        const formattedDate = date.toLocaleDateString('pt-BR', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        guestCard.innerHTML = `
+            <div class="guest-card h-full mx-2">
+                <div class="guest-icon">
+                    <i class="fas ${randomIcon}"></i>
+                </div>
+                <h3 class="guest-name">${guest.name}</h3>
+                <p class="guest-date">Confirmado em ${formattedDate}</p>
+            </div>
+        `;
+        
+        guestCarousel.appendChild(guestCard);
+    });
+    
+    // Create dots if there are guests
+    if (confirmedGuests.length > 0) {
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
+            dot.onclick = () => {
+                currentGuestIndex = i;
+                updateGuestCarousel();
+            };
+            guestDots.appendChild(dot);
+        }
+    }
+    
+    updateGuestCarousel();
+}
+
+// Move guest carousel
+function moveGuestCarousel(direction) {
+    const confirmedGuests = rsvpList;
+    const totalSlides = Math.ceil(confirmedGuests.length / itemsPerSlide);
+    currentGuestIndex = (currentGuestIndex + direction + totalSlides) % totalSlides;
+    updateGuestCarousel();
+}
+
+// Update guest carousel position
+function updateGuestCarousel() {
+    const guestCarousel = document.getElementById('guest-carousel');
+    const guestDots = document.querySelectorAll('#guest-dots .carousel-dot');
+    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
+    
+    guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemsPerSlide * itemWidth}px)`;
+    
+    // Update dots
+    guestDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentGuestIndex);
+    });
+}
 
 // Modal functions
 function openModal(giftId) {
@@ -910,15 +1126,7 @@ document.getElementById('gift-form').addEventListener('submit', function(e) {
 	
 	// Close modal and refresh gift list
 	closeModal();
-	
-	// Refresh the gift list to show the reservation
-	const giftButtons = document.querySelectorAll(`button[onclick="openModal(${giftId})"]`);
-	giftButtons.forEach(button => {
-		button.outerHTML = `
-			<p class="text-green-600 mb-2">Reservado por ${giverName}</p>
-			<button onclick="openModal(${giftId})" class="mt-2 inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed" disabled>Presenteado</button>
-		`;
-	});
+	renderGiftCarousel();
 });
 
 // Countdown timer
@@ -953,7 +1161,7 @@ document.getElementById('rsvp-form').addEventListener('submit', function(e) {
 	localStorage.setItem('rsvpList', JSON.stringify(rsvpList));
 	
 	// Refresh the guest list
-	renderGuestList();
+	renderGuestCarousel();
 	
 	// Reset form
 	this.reset();
@@ -977,78 +1185,126 @@ function smoothScroll(targetId) {
 
 // Welcome overlay and music functionality
 document.addEventListener('DOMContentLoaded', function() {
-	const welcomeOverlay = document.getElementById('welcome-overlay');
-	const enterButton = document.getElementById('enter-button');
-	const navbar = document.getElementById('navbar');
-	const musicControl = document.getElementById('music-control');
-	
-	// List of wedding-themed music (you can replace these with your own)
-	const weddingSongs = [
-		'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-		'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-		'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-	];
-	
-	// Create audio element
-	const audio = new Audio();
-	let isPlaying = false;
-	
-	// Randomly select a song
-	function playRandomWeddingSong() {
-		const randomSong = "background.mp3"
-		audio.src = randomSong;
-		audio.loop = true;
-		audio.volume = 0.5; // Set volume to 50%
-		audio.play()
-			.then(() => {
-				isPlaying = true;
-				musicControl.innerHTML = '<i class="fas fa-pause"></i>';
-			})
-			.catch(error => {
-				console.log('Autoplay prevented:', error);
-				// Show play button to allow user to start music manually
-				musicControl.classList.add('show');
-			});
-	}
-	
-	// Enter button click handler
-	enterButton.addEventListener('click', function() {
-		// Hide welcome overlay
-		welcomeOverlay.classList.add('hidden');
-		
-		// Show navbar
-		setTimeout(() => {
-			navbar.classList.add('show');
-		}, 500);
-		
-		// Play music
-		playRandomWeddingSong();
-		
-		// Show music control after a delay
-		setTimeout(() => {
-			musicControl.classList.add('show');
-		}, 1000);
-	});
-	
-	// Music control click handler
-	musicControl.addEventListener('click', function() {
-		if (isPlaying) {
-			audio.pause();
-			musicControl.innerHTML = '<i class="fas fa-play"></i>';
-		} else {
-			audio.play()
-				.then(() => {
-					musicControl.innerHTML = '<i class="fas fa-pause"></i>';
-				})
-				.catch(error => {
-					console.log('Playback failed:', error);
-				});
-		}
-		isPlaying = !isPlaying;
-	});
-	
-
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    const enterButton = document.getElementById('enter-button');
+    const navbar = document.getElementById('navbar');
+    const musicControl = document.getElementById('music-control');
+    
+    // List of wedding-themed music (you can replace these with your own)
+    const weddingSongs = [
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+    ];
+    
+    // Create audio element
+    const audio = new Audio();
+    let isPlaying = false;
+    
+    // Randomly select a song
+    function playRandomWeddingSong() {
+        const randomSong = "background.mp3"
+        audio.src = randomSong;
+        audio.loop = true;
+        audio.volume = 0.5; // Set volume to 50%
+        audio.play()
+            .then(() => {
+                isPlaying = true;
+                musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+            })
+            .catch(error => {
+                console.log('Autoplay prevented:', error);
+                // Show play button to allow user to start music manually
+                musicControl.classList.add('show');
+            });
+    }
+    
+    // Enter button click handler
+    enterButton.addEventListener('click', function() {
+        // Hide welcome overlay
+        welcomeOverlay.classList.add('hidden');
+        
+        // Show navbar
+        setTimeout(() => {
+            navbar.classList.add('show');
+        }, 500);
+        
+        // Play music
+        playRandomWeddingSong();
+        
+        // Show music control after a delay
+        setTimeout(() => {
+            musicControl.classList.add('show');
+        }, 1000);
+        
+        // Initialize carousels
+        initCarousels();
+    });
+    
+    // Music control click handler
+    musicControl.addEventListener('click', function() {
+        if (isPlaying) {
+            audio.pause();
+            musicControl.innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            audio.play()
+                .then(() => {
+                    musicControl.innerHTML = '<i class="fas fa-pause"></i>';
+                })
+                .catch(error => {
+                    console.log('Playback failed:', error);
+                });
+        }
+        isPlaying = !isPlaying;
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        updateItemsPerSlide();
+        renderGiftCarousel();
+        renderGuestCarousel();
+    });
+    
+    // Initialize carousels when page loads
+    if (welcomeOverlay.classList.contains('hidden')) {
+        initCarousels();
+    }
 });
+
+// Touch events for carousels
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleTouchStart(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}
+
+function handleTouchEnd(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}
+
+function handleSwipe() {
+    const threshold = 50; // Minimum swipe distance to trigger
+    
+    if (touchEndX < touchStartX - threshold) {
+        // Swipe left - next
+        moveGiftCarousel(1);
+        moveGuestCarousel(1);
+    }
+    
+    if (touchEndX > touchStartX + threshold) {
+        // Swipe right - previous
+        moveGiftCarousel(-1);
+        moveGuestCarousel(-1);
+    }
+}
+
+// Add touch event listeners
+document.getElementById('gift-carousel').addEventListener('touchstart', handleTouchStart, false);
+document.getElementById('gift-carousel').addEventListener('touchend', handleTouchEnd, false);
+document.getElementById('guest-carousel').addEventListener('touchstart', handleTouchStart, false);
+document.getElementById('guest-carousel').addEventListener('touchend', handleTouchEnd, false);
 	</script>
 </body>
 </html>
