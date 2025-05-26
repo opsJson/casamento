@@ -703,39 +703,108 @@ const gifts = [
 	{
 		id: 1,
 		name: "Batedeira",
-		image: "presentes/batedeira.png",
-		link: "https://exemplo.com/panelas"
+		image: "presentes/batedeira.png"
 	},
 	{
 		id: 2,
 		name: "Jogo de copo",
-		image: "presentes/jogo de copo.png",
-		link: "https://exemplo.com/cafe"
+		image: "presentes/jogo de copo.png"
 	},
 	{
 		id: 3,
-		name: "Jogo de Toalhas de Banho",
-		image: "https://images.unsplash.com/photo-1615874959474-df56644c8329?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-		link: "https://exemplo.com/toalhas"
+		name: "Jogo de jantar",
+		image: "presentes/jogo de jantar.png"
 	},
 	{
 		id: 4,
-		name: "Air Fryer",
-		image: "https://images.unsplash.com/photo-1617024542329-6ed5f6c7172e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-		link: "https://exemplo.com/airfryer"
+		name: "Liquidificador",
+		image: "presentes/liquidificador.png"
 	},
 	{
 		id: 5,
-		name: "Jogo de Copos",
-		image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
-		link: "https://exemplo.com/copos"
+		name: "Microondas",
+		image: "presentes/microondas.png"
 	},
 	{
 		id: 6,
-		name: "Vale-presente para Viagem",
-		image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1473&q=80",
-		link: "https://exemplo.com/viagem"
-	}
+		name: "Multiprocessador",
+		image: "presentes/multiprocessador.png"
+	},
+	{
+		id: 7,
+		name: "Cafeteira Nespresso",
+		image: "presentes/nespresso.png"
+	},
+	{
+		id: 8,
+		name: "Maquina de Lavar",
+		image: "presentes/maquina de lavar.png"
+	},
+	{
+		id: 8,
+		name: "Geladeira",
+		image: "presentes/geladeira.png"
+	},
+	{
+		id: 9,
+		name: "Jarra de Suco",
+		image: "presentes/jarra.png"
+	},
+	{
+		id: 10,
+		name: "Grill",
+		image: "presentes/grill.png"
+	},
+	{
+		id: 11,
+		name: "Aspirador de pó",
+		image: "presentes/aspirador de po.png"
+	},
+	{
+		id: 12,
+		name: "Ferro de passar",
+		image: "presentes/ferro de passar.png"
+	},
+	{
+		id: 13,
+		name: "Edredom",
+		image: "presentes/edredom.png"
+	},
+	{
+		id: 14,
+		name: "Ventilador",
+		image: "presentes/ventilador.png"
+	},
+	{
+		id: 15,
+		name: "Purificador de Água",
+		image: "presentes/purificador.png"
+	},
+	{
+		id: 16,
+		name: "Sanduicheira",
+		image: "presentes/sanduicheira.png"
+	},
+	{
+		id: 17,
+		name: "Panela de Arroz",
+		image: "presentes/arroz.png"
+	},
+	{
+		id: 18,
+		name: "Panela de Pressão",
+		image: "presentes/panela de pressao.png"
+	},
+	{
+		id: 19,
+		name: "Frigideira",
+		image: "presentes/frigideira.png"
+	},
+	{
+		id: 20,
+		name: "Potes Hermêticos",
+		image: "presentes/hermeticos.png"
+	},
 ];
 
 // Load gift reservations from localStorage
@@ -805,7 +874,7 @@ function renderGuestList() {
 		guestCard.innerHTML = `
 			<div class="guest-icon">
 				<i class="fas ${randomIcon}"></i>
-			div>
+			<div>
 			<h3 class="guest-name">${guest.name}</h3>
 			<p class="guest-date">Confirmado em ${formattedDate}</p>
 		`;
