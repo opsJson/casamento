@@ -307,7 +307,7 @@ body {
 	background-color: white;
 	width: 50px;
 	height: 50px;
-	borthe current code is: der-radius: 50%;
+	border-radius: 50%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -391,6 +391,35 @@ body {
         margin-top: 5px;
         color: #d4a373;
     }
+
+    /* Scroll down arrow */
+    .scroll-down {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 2rem;
+        animation: bounce 2s infinite;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0) translateX(-50%);
+        }
+        40% {
+            transform: translateY(-20px) translateX(-50%);
+        }
+        60% {
+            transform: translateY(-10px) translateX(-50%);
+        }
+    }
+
+    .scroll-down:hover {
+        opacity: 0.8;
+    }
 	</style>
 </head>
 <body>
@@ -438,13 +467,17 @@ body {
     </div>
 
     <!-- Hero Section -->
-    <section class="hero min-h-screen flex items-center justify-center text-white text-center px-4">
+    <section class="hero min-h-screen flex items-center justify-center text-white text-center px-4 relative">
         <div>
             <h1 class="title-font text-4xl md:text-6xl mb-4">Cleverson & Noemi Nayara</h1>
             <p class="text-xl md:text-2xl mb-8">27 de Junho de 2025</p>
             <div class="divider"></div>
             <p class="text-lg md:text-xl max-w-2xl mx-auto">Com muita alegria, convidamos você para celebrar conosco o início desta nova jornada.</p>
-            <button class="mt-8 inline-block bg-white text-gray-800 px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition duration-300" onclick="smoothScroll('rsvp')">Confirmar Presença</button>
+            
+            <!-- Scroll down arrow -->
+            <div class="scroll-down" onclick="smoothScroll('couple')">
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </section>
 
@@ -772,7 +805,7 @@ function renderGuestList() {
 		guestCard.innerHTML = `
 			<div class="guest-icon">
 				<i class="fas ${randomIcon}"></i>
-			</div>
+			div>
 			<h3 class="guest-name">${guest.name}</h3>
 			<p class="guest-date">Confirmado em ${formattedDate}</p>
 		`;
