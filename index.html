@@ -427,19 +427,24 @@ body {
         width: 100%;
         overflow: hidden;
         margin: 0 auto;
+        padding: 0 20px;
     }
 
     .carousel-track {
         display: flex;
-        transition: transform 0.5s ease;
+        transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
         padding: 20px 0;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
     }
 
     .carousel-item {
-        min-width: 250px;
+        min-width: calc(100% - 40px);
         margin: 0 10px;
         flex: 0 0 auto;
         transition: all 0.3s ease;
+        scroll-snap-align: center;
     }
 
     .carousel-btn {
@@ -464,11 +469,11 @@ body {
     }
 
     .carousel-btn.prev {
-        left: 10px;
+        left: 0;
     }
 
     .carousel-btn.next {
-        right: 10px;
+        right: 0;
     }
 
     .carousel-btn i {
@@ -498,14 +503,23 @@ body {
 
     @media (min-width: 768px) {
         .carousel-item {
-            min-width: calc(33.333% - 20px);
+            min-width: calc(50% - 40px);
         }
     }
 
     @media (min-width: 1024px) {
         .carousel-item {
-            min-width: calc(25% - 20px);
+            min-width: calc(33.333% - 40px);
         }
+    }
+
+    /* Prevent image dragging */
+    img {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
     }
 	</style>
 </head>
@@ -926,13 +940,18 @@ let rsvpList = JSON.parse(localStorage.getItem('rsvpList')) || [];
 let currentGiftIndex = 0;
 let currentGuestIndex = 0;
 let itemsPerSlide = 1; // Will be updated based on screen size
+let isDragging = false;
+let startPos = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let animationID = 0;
 
 // Update items per slide based on screen size
 function updateItemsPerSlide() {
     if (window.innerWidth >= 1024) {
-        itemsPerSlide = 4;
-    } else if (window.innerWidth >= 768) {
         itemsPerSlide = 3;
+    } else if (window.innerWidth >= 768) {
+        itemsPerSlide = 2;
     } else {
         itemsPerSlide = 1;
     }
@@ -1271,40 +1290,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Touch events for carousels
-let touchStartX = 0;
-let touchEndX = 0;
-
-function handleTouchStart(e) {
-    touchStartX = e.changedTouches[0].screenX;
-}
-
-function handleTouchEnd(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-}
-
-function handleSwipe() {
-    const threshold = 50; // Minimum swipe distance to trigger
+// Enhanced touch events for carousels
+function setupCarouselTouchEvents(carouselId, moveFunction) {
+    const carousel = document.getElementById(carouselId);
+    let startX, moveX, isDragging = false;
     
-    if (touchEndX < touchStartX - threshold) {
-        // Swipe left - next
-        moveGiftCarousel(1);
-        moveGuestCarousel(1);
-    }
+    carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        carousel.style.transition = 'none';
+    }, { passive: true });
     
-    if (touchEndX > touchStartX + threshold) {
-        // Swipe right - previous
-        moveGiftCarousel(-1);
-        moveGuestCarousel(-1);
-    }
+    carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        moveX = e.touches[0].clientX;
+        const diff = moveX - startX;
+        carousel.style.transform = `translateX(calc(-${currentGiftIndex * 100}% + ${diff}px))`;
+    }, { passive: true });
+    
+    carousel.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        
+        const diff = moveX - startX;
+        const threshold = carousel.offsetWidth * 0.2;
+        
+        if (diff < -threshold) {
+            moveFunction(1); // Swipe left - next
+        } else if (diff > threshold) {
+            moveFunction(-1); // Swipe right - previous
+        } else {
+            // Return to original position
+            carousel.style.transform = `translateX(-${currentGiftIndex * 100}%)`;
+        }
+    }, { passive: true });
 }
 
-// Add touch event listeners
-document.getElementById('gift-carousel').addEventListener('touchstart', handleTouchStart, false);
-document.getElementById('gift-carousel').addEventListener('touchend', handleTouchEnd, false);
-document.getElementById('guest-carousel').addEventListener('touchstart', handleTouchStart, false);
-document.getElementById('guest-carousel').addEventListener('touchend', handleTouchEnd, false);
+// Setup touch events for both carousels
+setupCarouselTouchEvents('gift-carousel', moveGiftCarousel);
+setupCarouselTouchEvents('guest-carousel', moveGuestCarousel);
 	</script>
 </body>
 </html>
