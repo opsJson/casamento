@@ -236,6 +236,7 @@ document.getElementById("rsvp-form").addEventListener("submit", function(e) {
 function openModal(giftId) {
 	document.getElementById("selected-gift").value = giftId;
 	document.getElementById("gift-modal").style.display = "flex";
+	document.getElementById("giver-name").focus();
 }
 
 function closeModal() {
