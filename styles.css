@@ -495,3 +495,25 @@ img {
 	-o-user-drag: none;
 	user-drag: none;
 }
+
+
+.gift-swiper, .guest-swiper {
+  padding: 1rem;
+}
+
+.swiper-slide {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: auto;
+}
+
+/* Espaço entre os itens e a paginação */
+.gift-swiper .swiper-pagination,
+.guest-swiper .swiper-pagination {
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  position: relative;
+  bottom: 0;
+}

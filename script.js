@@ -114,13 +114,11 @@ const gifts = [
 const giftReservations = JSON.parse(localStorage.getItem("giftReservations")) || {};
 const rsvpList = JSON.parse(localStorage.getItem("rsvpList")) || [];
 
-let currentGiftIndex = 0;
-let currentGuestIndex = 0;
-let itemsPerSlide = 1;
-
 const musicControl = document.getElementById("music-control");
 const audio = new Audio();
 let isPlaying = false;
+let swiperInstance;
+let guestSwiperInstance;
 
 document.getElementById("enter-button").addEventListener("click", function() {
 	document.getElementById("welcome-overlay").classList.add("hidden");
@@ -180,158 +178,6 @@ document.getElementById("rsvp-form").addEventListener("submit", function(e) {
 	document.getElementById("guests").scrollIntoView({ behavior: "smooth" });
 });
 
-
-function renderGiftCarousel() {
-    const giftCarousel = document.getElementById('gift-carousel');
-    const giftDots = document.getElementById('gift-dots');
-    
-    giftCarousel.innerHTML = '';
-    giftDots.innerHTML = '';
-    
-    const totalSlides = Math.ceil(gifts.length / itemsPerSlide);
-    
-    gifts.forEach((gift, index) => {
-        const isReserved = giftReservations[gift.id];
-        
-        const giftItem = document.createElement('div');
-        giftItem.className = 'carousel-item';
-        giftItem.innerHTML = `
-            <div class="gift-item bg-white rounded-lg overflow-hidden shadow-md transition duration-300 h-full mx-2">
-                <img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="title-font text-xl mb-2">${gift.name}</h3>
-                    ${isReserved ? 
-                        `<p class="text-green-600 mb-2">Reservado por ${isReserved.giverName}</p>
-                         <button onclick="openModal(${gift.id})" class="mt-2 inline-block bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed" disabled>Presenteado</button>` :
-                        `<button onclick="openModal(${gift.id})" class="mt-4 inline-block bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition duration-300">Presentear</button>`
-                    }
-                </div>
-            </div>
-        `;
-        giftCarousel.appendChild(giftItem);
-    });
-    
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('div');
-        dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-        dot.onclick = () => {
-            currentGiftIndex = i;
-            updateGiftCarousel();
-        };
-        giftDots.appendChild(dot);
-    }
-    
-    updateGiftCarousel();
-}
-
-function moveGiftCarousel(direction) {
-    const totalSlides = Math.ceil(gifts.length / itemsPerSlide);
-    currentGiftIndex = (currentGiftIndex + direction + totalSlides) % totalSlides;
-    updateGiftCarousel();
-}
-
-function updateGiftCarousel() {
-    const giftCarousel = document.getElementById('gift-carousel');
-    const giftDots = document.querySelectorAll('#gift-dots .carousel-dot');
-    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
-    
-	giftCarousel.style.transform = `translateX(-${currentGiftIndex * 100}%)`;
-    
-    // Update dots
-    giftDots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentGiftIndex);
-    });
-}
-
-function renderGuestCarousel() {
-    const guestCarousel = document.getElementById('guest-carousel');
-    const guestDots = document.getElementById('guest-dots');
-    
-    guestCarousel.innerHTML = '';
-    guestDots.innerHTML = '';
-    
-    // Filter only guests who confirmed attendance
-    const confirmedGuests = rsvpList;
-    const totalSlides = Math.ceil(confirmedGuests.length / itemsPerSlide);
-    
-    if (confirmedGuests.length === 0) {
-        guestCarousel.innerHTML = `
-            <div class="no-guests carousel-item w-full">
-                <i class="fas fa-heart-broken text-4xl text-gray-400 mb-4"></i>
-                <p>Ainda não temos confirmações. Seja o primeiro a confirmar!</p>
-            </div>
-        `;
-        return;
-    }
-    
-    confirmedGuests.forEach((guest, index) => {
-        const guestCard = document.createElement('div');
-        guestCard.className = 'carousel-item';
-        
-        // Randomly select an icon for variety
-        const icons = ['fa-heart', 'fa-glass-cheers', 'fa-smile', 'fa-star', 'fa-gem'];
-        const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-        
-        // Format date
-        const date = new Date(guest.date);
-        const formattedDate = date.toLocaleDateString('pt-BR', { 
-            day: '2-digit', 
-            month: '2-digit', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        
-        guestCard.innerHTML = `
-            <div class="guest-card h-full mx-2">
-                <div class="guest-icon">
-                    <i class="fas ${randomIcon}"></i>
-                </div>
-                <h3 class="guest-name">${guest.name}</h3>
-                <p class="guest-date">Confirmado em ${formattedDate}</p>
-            </div>
-        `;
-        
-        guestCarousel.appendChild(guestCard);
-    });
-    
-    // Create dots if there are guests
-    if (confirmedGuests.length > 0) {
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('div');
-            dot.className = `carousel-dot ${i === 0 ? 'active' : ''}`;
-            dot.onclick = () => {
-                currentGuestIndex = i;
-                updateGuestCarousel();
-            };
-            guestDots.appendChild(dot);
-        }
-    }
-    
-    updateGuestCarousel();
-}
-
-function moveGuestCarousel(direction) {
-    const confirmedGuests = rsvpList;
-    const totalSlides = Math.ceil(confirmedGuests.length / itemsPerSlide);
-    currentGuestIndex = (currentGuestIndex + direction + totalSlides) % totalSlides;
-    updateGuestCarousel();
-}
-
-function updateGuestCarousel() {
-    const guestCarousel = document.getElementById('guest-carousel');
-    const guestDots = document.querySelectorAll('#guest-dots .carousel-dot');
-    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
-    
-    guestCarousel.style.transform = `translateX(-${currentGuestIndex * 100}%)`;
-    
-    // Update dots
-    guestDots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentGuestIndex);
-    });
-}
-
 function openModal(giftId) {
 	document.getElementById("selected-gift").value = giftId;
 	document.getElementById("gift-modal").style.display = "flex";
@@ -379,3 +225,118 @@ function playSong() {
 		musicControl.classList.add("show");
 	});
 }
+
+function renderGiftCarousel() {
+  const track = document.getElementById("gift-carousel-track");
+  track.innerHTML = "";
+
+  gifts.forEach(gift => {
+    const isReserved = giftReservations[gift.id];
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide";
+    slide.innerHTML = `
+      <div class="gift-item">
+        <img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
+        <div class="p-4 text-center">
+          <h3 class="title-font text-xl mb-2">${gift.name}</h3>
+          ${isReserved ?
+            `<p class='text-green-600 mb-2'>Reservado por ${isReserved.giverName}</p>
+             <button class='bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed' disabled>Presenteado</button>` :
+            `<button onclick="openModal(${gift.id})" class="mt-2 bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition">Presentear</button>`
+          }
+        </div>
+      </div>
+    `;
+    track.appendChild(slide);
+  });
+
+  if (swiperInstance) swiperInstance.destroy(true, true);
+
+  swiperInstance = new Swiper(".gift-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 16,
+    breakpoints: {
+      640: {
+        slidesPerView: 2
+      },
+      1024: {
+        slidesPerView: 3
+      }
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev"
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true
+    }
+  });
+}
+
+function renderGuestCarousel() {
+  const track = document.getElementById("guest-carousel-track");
+  track.innerHTML = "";
+
+  if (!rsvpList || rsvpList.length === 0) {
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide text-center p-6";
+    slide.innerHTML = `
+      <div class="text-gray-400">
+        <i class="fas fa-heart-broken text-4xl"></i>
+        <p class="mt-4">Ainda não temos confirmações. Seja o primeiro a confirmar!</p>
+      </div>
+    `;
+    track.appendChild(slide);
+  } else {
+    rsvpList.forEach(guest => {
+      const date = new Date(guest.date).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      const icons = ["fa-heart", "fa-glass-cheers", "fa-smile", "fa-star", "fa-gem"];
+      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+
+      const slide = document.createElement("div");
+      slide.className = "swiper-slide text-center p-4";
+      slide.innerHTML = `
+        <div class="guest-card p-4">
+          <div class="text-3xl text-amber-500 mb-2">
+            <i class="fas ${randomIcon}"></i>
+          </div>
+          <h3 class="font-semibold text-lg">${guest.name}</h3>
+          <p class="text-sm text-gray-500">Confirmado em ${date}</p>
+        </div>
+      `;
+      track.appendChild(slide);
+    });
+  }
+
+  if (guestSwiperInstance) guestSwiperInstance.destroy(true, true);
+
+  guestSwiperInstance = new Swiper(".guest-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 16,
+    breakpoints: {
+      640: { slidesPerView: 2 },
+      1024: { slidesPerView: 3 }
+    },
+    navigation: {
+      nextEl: ".guest-swiper .swiper-button-next",
+      prevEl: ".guest-swiper .swiper-button-prev"
+    },
+    pagination: {
+      el: ".guest-swiper .swiper-pagination",
+      clickable: true
+    }
+  });
+}
+
+window.addEventListener("resize", () => {
+  swiperInstance?.update();
+  guestSwiperInstance?.update();
+});
