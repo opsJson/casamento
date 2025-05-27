@@ -423,22 +423,22 @@ body {
 
     /* Carousel styles */
     .carousel-container {
-        position: relative;
-        width: 100%;
         overflow: hidden;
-        margin: 0 auto;
-        padding: 0 20px;
+		width: 100%;
+		position: relative;
     }
 
     .carousel-track {
-        display: flex;
-		justify-content: center;        /* centraliza os itens */
-		transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+		display: flex;
+		transition: transform 0.5s ease-in-out;
+		width: 100%;
     }
 
     .carousel-item {
-        flex: 0 0 auto;
-		margin: 0 10px;                 /* espaço entre os itens */
+		width: 100%;
+		flex-shrink: 0;
+		display: flex;
+		justify-content: center;
 		scroll-snap-align: center;
     }
 
@@ -948,6 +948,7 @@ let animationID = 0;
 
 // Update items per slide based on screen size
 function updateItemsPerSlide() {
+	return 1;
     if (window.innerWidth >= 1024) {
         itemsPerSlide = 3;
     } else if (window.innerWidth >= 768) {
@@ -1020,17 +1021,13 @@ function moveGiftCarousel(direction) {
 function updateGiftCarousel() {
     const giftCarousel = document.getElementById('gift-carousel');
     const giftDots = document.querySelectorAll('#gift-dots .carousel-dot');
-    const containerWidth = document.querySelector('.carousel-container').offsetWidth;
-    const itemElem = document.querySelector('.carousel-item');
-    const itemWidth = itemElem.offsetWidth + parseInt(getComputedStyle(itemElem).marginLeft) + parseInt(getComputedStyle(itemElem).marginRight);
-
-    // Cálculo para centralizar o item currentGiftIndex
-    const offset = (containerWidth / 2) - (itemWidth / 2) - (currentGiftIndex * itemWidth);
-
-    giftCarousel.style.transform = `translateX(${offset}px)`;
-
-    giftDots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentGiftIndex);
+    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
+    
+	giftCarousel.style.transform = `translateX(-${currentGiftIndex * 100}%)`;
+    
+    // Update dots
+    giftDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentGiftIndex);
     });
 }
 
@@ -1115,16 +1112,14 @@ function moveGuestCarousel(direction) {
 function updateGuestCarousel() {
     const guestCarousel = document.getElementById('guest-carousel');
     const guestDots = document.querySelectorAll('#guest-dots .carousel-dot');
-    const containerWidth = document.querySelector('#guests .carousel-container').offsetWidth;
-    const itemElem = document.querySelector('.carousel-item');
-    const itemWidth = itemElem.offsetWidth + parseInt(getComputedStyle(itemElem).marginLeft) + parseInt(getComputedStyle(itemElem).marginRight);
+    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
+    
+    guestCarousel.style.transform = `translateX(-${currentGuestIndex * 100}%)`;
 
-    const offset = (containerWidth / 2) - (itemWidth / 2) - (currentGuestIndex * itemWidth);
-
-    guestCarousel.style.transform = `translateX(${offset}px)`;
-
-    guestDots.forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === currentGuestIndex);
+    
+    // Update dots
+    guestDots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentGuestIndex);
     });
 }
 
