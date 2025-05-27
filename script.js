@@ -173,7 +173,6 @@ const musicControl = document.getElementById("music-control");
 const audio = new Audio();
 let isPlaying = false;
 let swiperInstance;
-let guestSwiperInstance;
 
 document.getElementById("enter-button").addEventListener("click", function() {
 	document.getElementById("welcome-overlay").classList.add("hidden");
@@ -185,7 +184,6 @@ document.getElementById("enter-button").addEventListener("click", function() {
 	}, 1000);
 	
 	renderGiftCarousel();
-    renderGuestCarousel();
 });
 
 musicControl.addEventListener("click", function() {
@@ -219,18 +217,6 @@ document.getElementById("gift-form").addEventListener("submit", function(e) {
 	
 	closeModal();
 	renderGiftCarousel();
-});
-
-document.getElementById("rsvp-form").addEventListener("submit", function(e) {
-	e.preventDefault();
-	
-	const name = document.getElementById("name").value;
-	rsvpList.push({ name, date: new Date().toISOString() });
-	localStorage.setItem("rsvpList", JSON.stringify(rsvpList));
-	renderGuestCarousel();
-
-	this.reset();
-	document.getElementById("guests").scrollIntoView({ behavior: "smooth" });
 });
 
 function openModal(giftId) {
@@ -330,69 +316,6 @@ function renderGiftCarousel() {
   });
 }
 
-function renderGuestCarousel() {
-  const track = document.getElementById("guest-carousel-track");
-  track.innerHTML = "";
-
-  if (!rsvpList || rsvpList.length === 0) {
-    const slide = document.createElement("div");
-    slide.className = "swiper-slide text-center p-6";
-    slide.innerHTML = `
-      <div class="text-gray-400">
-        <i class="fas fa-heart-broken text-4xl"></i>
-        <p class="mt-4">Ainda não temos confirmações. Seja o primeiro a confirmar!</p>
-      </div>
-    `;
-    track.appendChild(slide);
-  } else {
-    rsvpList.forEach(guest => {
-      const date = new Date(guest.date).toLocaleString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-
-      const icons = ["fa-heart", "fa-glass-cheers", "fa-smile", "fa-star", "fa-gem"];
-      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
-
-      const slide = document.createElement("div");
-      slide.className = "swiper-slide text-center p-4";
-      slide.innerHTML = `
-        <div class="guest-card p-4">
-          <div class="text-3xl text-amber-500 mb-2">
-            <i class="fas ${randomIcon}"></i>
-          </div>
-          <h3 class="font-semibold text-lg">${guest.name}</h3>
-          <p class="text-sm text-gray-500">Confirmado em ${date}</p>
-        </div>
-      `;
-      track.appendChild(slide);
-    });
-  }
-
-  if (guestSwiperInstance) guestSwiperInstance.destroy(true, true);
-
-  guestSwiperInstance = new Swiper(".guest-swiper", {
-    slidesPerView: 1,
-    spaceBetween: 16,
-    breakpoints: {
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 3 }
-    },
-    navigation: {
-      nextEl: ".guest-swiper .swiper-button-next",
-      prevEl: ".guest-swiper .swiper-button-prev"
-    },
-    pagination: {
-      el: ".guest-swiper .swiper-pagination",
-      clickable: true
-    }
-  });
-}
-
 window.addEventListener("resize", () => {
   swiperInstance?.update();
-  guestSwiperInstance?.update();
 });
