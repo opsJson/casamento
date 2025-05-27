@@ -131,7 +131,8 @@ document.getElementById("enter-button").addEventListener("click", function() {
 		musicControl.classList.add("show");
 	}, 1000);
 	
-	initCarousels();
+	renderGiftCarousel();
+    renderGuestCarousel();
 });
 
 musicControl.addEventListener("click", function() {
@@ -179,11 +180,6 @@ document.getElementById("rsvp-form").addEventListener("submit", function(e) {
 	document.getElementById("guests").scrollIntoView({ behavior: "smooth" });
 });
 
-
-function initCarousels() {
-    renderGiftCarousel();
-    renderGuestCarousel();
-}
 
 function renderGiftCarousel() {
     const giftCarousel = document.getElementById('gift-carousel');
