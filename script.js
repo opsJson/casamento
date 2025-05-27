@@ -184,6 +184,11 @@ const gifts = [
 		name: "Jogo de Taças",
 		image: "presentes/jogo de tacas.png"
 	},
+	{
+		id: 38,
+		name: "Kit Churrasco",
+		image: "presentes/kit churrasco.png"
+	}
 ];
 
 const giftReservations = JSON.parse(localStorage.getItem("giftReservations")) || {};
