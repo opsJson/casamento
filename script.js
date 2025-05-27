@@ -253,7 +253,7 @@ function closeModal() {
 }
 
 function updateCountdown() {
-	const weddingDate = new Date("June 27, 2025 16:30:00").getTime();
+	const weddingDate = new Date("June 27, 2025 20:00:00").getTime();
 	
 	const now = new Date().getTime();
 	const distance = weddingDate - now;
