@@ -432,17 +432,14 @@ body {
 
     .carousel-track {
         display: flex;
-        transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-        padding: 20px 0;
-        
+		justify-content: center;        /* centraliza os itens */
+		transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
     .carousel-item {
-        min-width: calc(100% - 40px);
-        margin: 0 10px;
         flex: 0 0 auto;
-        transition: all 0.3s ease;
-        scroll-snap-align: center;
+		margin: 0 10px;                 /* espaço entre os itens */
+		scroll-snap-align: center;
     }
 
     .carousel-btn {
@@ -1023,14 +1020,17 @@ function moveGiftCarousel(direction) {
 function updateGiftCarousel() {
     const giftCarousel = document.getElementById('gift-carousel');
     const giftDots = document.querySelectorAll('#gift-dots .carousel-dot');
-    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
-    
-    //giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemsPerSlide * itemWidth}px)`;
-	giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemWidth}px)`;
-    
-    // Update dots
-    giftDots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentGiftIndex);
+    const containerWidth = document.querySelector('.carousel-container').offsetWidth;
+    const itemElem = document.querySelector('.carousel-item');
+    const itemWidth = itemElem.offsetWidth + parseInt(getComputedStyle(itemElem).marginLeft) + parseInt(getComputedStyle(itemElem).marginRight);
+
+    // Cálculo para centralizar o item currentGiftIndex
+    const offset = (containerWidth / 2) - (itemWidth / 2) - (currentGiftIndex * itemWidth);
+
+    giftCarousel.style.transform = `translateX(${offset}px)`;
+
+    giftDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentGiftIndex);
     });
 }
 
@@ -1115,15 +1115,16 @@ function moveGuestCarousel(direction) {
 function updateGuestCarousel() {
     const guestCarousel = document.getElementById('guest-carousel');
     const guestDots = document.querySelectorAll('#guest-dots .carousel-dot');
-    const itemWidth = document.querySelector('.carousel-item').offsetWidth;
-    
-    //guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemsPerSlide * itemWidth}px)`;
-	guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemWidth}px)`;
+    const containerWidth = document.querySelector('#guests .carousel-container').offsetWidth;
+    const itemElem = document.querySelector('.carousel-item');
+    const itemWidth = itemElem.offsetWidth + parseInt(getComputedStyle(itemElem).marginLeft) + parseInt(getComputedStyle(itemElem).marginRight);
 
-    
-    // Update dots
-    guestDots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentGuestIndex);
+    const offset = (containerWidth / 2) - (itemWidth / 2) - (currentGuestIndex * itemWidth);
+
+    guestCarousel.style.transform = `translateX(${offset}px)`;
+
+    guestDots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentGuestIndex);
     });
 }
 
