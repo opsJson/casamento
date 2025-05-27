@@ -212,22 +212,25 @@ musicControl.addEventListener("click", function() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-document.getElementById("gift-form").addEventListener("submit", function(e) {
+document.getElementById("gift-form").addEventListener("submit", async function(e) {
 	e.preventDefault();
-	
 	const giftId = parseInt(document.getElementById("selected-gift").value);
 	let giverName = document.getElementById("giver-name").value?.trim();
 	if (!giverName) return;
-	
+
 	giverName = giverName[0].toUpperCase() + giverName.slice(1).toLowerCase();
-	
-	giftReservations[giftId] = { giverName, date: new Date().toISOString(), uuid };
-	localStorage.setItem("giftReservations", JSON.stringify(giftReservations));
-	
+
+	await fetch("https://g2gpnwmrawd4jxxfiopm6wkb4a0hlros.lambda-url.sa-east-1.on.aws/add", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ id: giftId, giverName, uuid })
+	});
+
 	closeModal();
 	renderGiftCarousel();
 	soltarFogos();
 });
+
 
 window.addEventListener("resize", () => {
   swiperInstance?.update();
@@ -282,23 +285,28 @@ function playSong() {
 	});
 }
 
-function renderGiftCarousel() {
+async function fetchGiftReservations() {
+	const res = await fetch("https://g2gpnwmrawd4jxxfiopm6wkb4a0hlros.lambda-url.sa-east-1.on.aws/");
+	const data = await res.json();
+	return Array.isArray(data) ? data : [];
+}
+
+async function renderGiftCarousel() {
 	const track = document.getElementById("gift-carousel-track");
 	track.innerHTML = "";
 
-	// Separar presentes em dois grupos
-	const reservados = [];
-	const naoReservados = [];
+	const reservations = await fetchGiftReservations();
+	const giftMap = {};
+	reservations.forEach(r => giftMap[r.id] = r);
 
+	// Separar presentes
+	const reservados = [], naoReservados = [];
 	gifts.forEach(gift => {
-		if (giftReservations[gift.id]) {
-			reservados.push(gift);
-		} else {
-			naoReservados.push(gift);
-		}
+		if (giftMap[gift.id]) reservados.push(gift);
+		else naoReservados.push(gift);
 	});
 
-	// Função para embaralhar os presentes
+	// Embaralhar
 	function shuffle(array) {
 		for (let i = array.length - 1; i > 0; i--) {
 			const j = Math.floor(Math.random() * (i + 1));
@@ -307,12 +315,10 @@ function renderGiftCarousel() {
 		return array;
 	}
 
-	// Embaralhar os dois grupos separadamente
 	const embaralhados = [...shuffle(naoReservados), ...shuffle(reservados)];
 
-	// Renderizar
 	embaralhados.forEach(gift => {
-		const isReserved = giftReservations[gift.id];
+		const r = giftMap[gift.id];
 		const slide = document.createElement("div");
 		slide.className = "swiper-slide";
 		slide.innerHTML = `
@@ -320,9 +326,9 @@ function renderGiftCarousel() {
 				<img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
 				<div class="p-4 text-center">
 					<h3 class="title-font text-xl mb-2">${gift.name}</h3>
-					${isReserved ? `
-						<p class='text-green-600 mb-2'>Reservado por ${isReserved.giverName}</p>
-						${isReserved.uuid === uuid
+					${r ? `
+						<p class='text-green-600 mb-2'>Reservado por ${r.giverName}</p>
+						${r.uuid === uuid
 							? `<button onclick="cancelarPresente(${gift.id})" class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Cancelar</button>`
 							: `<button class='bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed' disabled>Presenteado</button>`
 						}
@@ -335,7 +341,6 @@ function renderGiftCarousel() {
 		track.appendChild(slide);
 	});
 
-	// Recriar o Swiper
 	if (swiperInstance) swiperInstance.destroy(true, true);
 	swiperInstance = new Swiper(".gift-swiper", {
 		slidesPerView: 1,
@@ -355,6 +360,7 @@ function renderGiftCarousel() {
 	});
 }
 
+
 function soltarFogos() {
 	confetti({
 		particleCount: 150,
@@ -363,15 +369,12 @@ function soltarFogos() {
 	});
 }
 
-function cancelarPresente(giftId) {
+async function cancelarPresente(giftId) {
 	if (!confirm("Tem certeza que deseja cancelar sua reserva deste presente?")) return;
-
-	const reserva = giftReservations[giftId];
-	if (reserva?.uuid === uuid) {
-		delete giftReservations[giftId];
-		localStorage.setItem("giftReservations", JSON.stringify(giftReservations));
-		renderGiftCarousel();
-	} else {
-		alert("Você não tem permissão para cancelar essa reserva.");
-	}
+	await fetch("https://g2gpnwmrawd4jxxfiopm6wkb4a0hlros.lambda-url.sa-east-1.on.aws/remove", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ id: giftId, uuid })
+	});
+	renderGiftCarousel();
 }
