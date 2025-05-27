@@ -434,9 +434,7 @@ body {
         display: flex;
         transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
         padding: 20px 0;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
+        
     }
 
     .carousel-item {
@@ -604,6 +602,32 @@ body {
             </div>
         </div>
     </section>
+	
+    <!-- Countdown -->
+    <section class="py-20 bg-gradient-to-r from-rose-100 to-amber-100 px-4" id="countdown">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="title-font text-3xl md:text-4xl mb-8">Contagem Regressiva</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="countdown-item py-6">
+                    <div id="days" class="text-4xl font-bold mb-2">00</div>
+                    <div>Dias</div>
+                </div>
+                <div class="countdown-item py-6">
+                    <div id="hours" class="text-4xl font-bold mb-2">00</div>
+                    <div>Horas</div>
+                </div>
+                <div class="countdown-item py-6">
+                    <div id="minutes" class="text-4xl font-bold mb-2">00</div>
+                    <div>Minutos</div>
+                </div>
+                <div class="countdown-item py-6">
+                    <div id="seconds" class="text-4xl font-bold mb-2">00</div>
+                    <div>Segundos</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Event Details -->
     <section class="py-20 bg-gray-50 px-4" id="info">
@@ -706,32 +730,6 @@ body {
         </div>
     </section>
 
-    <!-- Countdown -->
-    <section class="py-20 bg-gradient-to-r from-rose-100 to-amber-100 px-4" id="countdown">
-        <div class="max-w-4xl mx-auto text-center">
-            <h2 class="title-font text-3xl md:text-4xl mb-8">Contagem Regressiva</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="countdown-item py-6">
-                    <div id="days" class="text-4xl font-bold mb-2">00</div>
-                    <div>Dias</div>
-                </div>
-                <div class="countdown-item py-6">
-                    <div id="hours" class="text-4xl font-bold mb-2">00</div>
-                    <div>Horas</div>
-                </div>
-                <div class="countdown-item py-6">
-                    <div id="minutes" class="text-4xl font-bold mb-2">00</div>
-                    <div>Minutos</div>
-                </div>
-                <div class="countdown-item py-6">
-                    <div id="seconds" class="text-4xl font-bold mb-2">00</div>
-                    <div>Segundos</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Gift List -->
     <section class="py-20 bg-gray-50 px-4" id="gifts">
         <div class="max-w-6xl mx-auto">
@@ -754,23 +752,7 @@ body {
             </div>
         </div>
     </section>
-
-    <!-- RSVP -->
-    <section class="py-20 px-4" id="rsvp">
-        <div class="max-w-2xl mx-auto">
-            <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Confirme sua Presença</h2>
-            
-            <form class="bg-white p-8 rounded-lg shadow-md" id="rsvp-form">
-                <div class="mb-6">
-                    <label for="name" class="block mb-2 font-medium">Nome Completo</label>
-                    <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-200" required>
-                </div>
-                
-                <button type="submit" class="w-full bg-amber-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-600 transition duration-300">Enviar Confirmação</button>
-            </form>
-        </div>
-    </section>
-
+	
     <!-- Guest List -->
     <section class="py-20 bg-gray-50 px-4" id="guests">
         <div class="max-w-6xl mx-auto">
@@ -791,6 +773,22 @@ body {
                     <!-- Dots will be added by JavaScript -->
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="py-20 px-4" id="rsvp">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="title-font text-3xl md:text-4xl text-center mb-12">Confirme sua Presença</h2>
+            
+            <form class="bg-white p-8 rounded-lg shadow-md" id="rsvp-form">
+                <div class="mb-6">
+                    <label for="name" class="block mb-2 font-medium">Nome Completo</label>
+                    <input type="text" id="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-200" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-amber-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-600 transition duration-300">Enviar Confirmação</button>
+            </form>
         </div>
     </section>
 
@@ -928,6 +926,11 @@ const gifts = [
 		name: "Potes Hermêticos",
 		image: "presentes/hermeticos.png"
 	},
+	{
+		id: 22,
+		name: "Air Fryer",
+		image: "presentes/airfryer.png"
+	}
 ];
 
 // Load gift reservations from localStorage
@@ -1022,7 +1025,8 @@ function updateGiftCarousel() {
     const giftDots = document.querySelectorAll('#gift-dots .carousel-dot');
     const itemWidth = document.querySelector('.carousel-item').offsetWidth;
     
-    giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemsPerSlide * itemWidth}px)`;
+    //giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemsPerSlide * itemWidth}px)`;
+	giftCarousel.style.transform = `translateX(-${currentGiftIndex * itemWidth}px)`;
     
     // Update dots
     giftDots.forEach((dot, index) => {
@@ -1113,7 +1117,9 @@ function updateGuestCarousel() {
     const guestDots = document.querySelectorAll('#guest-dots .carousel-dot');
     const itemWidth = document.querySelector('.carousel-item').offsetWidth;
     
-    guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemsPerSlide * itemWidth}px)`;
+    //guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemsPerSlide * itemWidth}px)`;
+	guestCarousel.style.transform = `translateX(-${currentGuestIndex * itemWidth}px)`;
+
     
     // Update dots
     guestDots.forEach((dot, index) => {
@@ -1289,47 +1295,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initCarousels();
     }
 });
-
-// Enhanced touch events for carousels
-function setupCarouselTouchEvents(carouselId, moveFunction) {
-    const carousel = document.getElementById(carouselId);
-    let startX, moveX, isDragging = false;
-    
-    carousel.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-        isDragging = true;
-        carousel.style.transition = 'none';
-    }, { passive: true });
-    
-    carousel.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        moveX = e.touches[0].clientX;
-        const diff = moveX - startX;
-        carousel.style.transform = `translateX(calc(-${currentGiftIndex * 100}% + ${diff}px))`;
-    }, { passive: true });
-    
-    carousel.addEventListener('touchend', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        carousel.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-        
-        const diff = moveX - startX;
-        const threshold = carousel.offsetWidth * 0.2;
-        
-        if (diff < -threshold) {
-            moveFunction(1); // Swipe left - next
-        } else if (diff > threshold) {
-            moveFunction(-1); // Swipe right - previous
-        } else {
-            // Return to original position
-            carousel.style.transform = `translateX(-${currentGiftIndex * 100}%)`;
-        }
-    }, { passive: true });
-}
-
-// Setup touch events for both carousels
-setupCarouselTouchEvents('gift-carousel', moveGiftCarousel);
-setupCarouselTouchEvents('guest-carousel', moveGuestCarousel);
 	</script>
 </body>
 </html>
