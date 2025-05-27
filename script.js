@@ -108,7 +108,62 @@ const gifts = [
 		id: 22,
 		name: "Air Fryer",
 		image: "presentes/airfryer.png"
-	}
+	},
+	{
+		id: 23,
+		name: "Cesto de Roupas",
+		image: "presentes/cesto de roupa.png"
+	},
+	{
+		id: 24,
+		name: "Fruteira",
+		image: "presentes/fruteira.png"
+	},
+	{
+		id: 25,
+		name: "Escorredor de louças",
+		image: "presentes/escorredor.png"
+	},
+	{
+		id: 26,
+		name: "Organizadores de Geladeira",
+		image: "presentes/organizadores geladeira.png"
+	},
+	{
+		id: 27,
+		name: "Galheteiro",
+		image: "presentes/galheteiro.png"
+	},
+	{
+		id: 28,
+		name: "Organizadores de Produtos de Limpeza",
+		image: "presentes/organizadores limpeza.png"
+	},
+	{
+		id: 29,
+		name: "Tábua de Corte de Vidro",
+		image: "presentes/tabua corte.png"
+	},
+	{
+		id: 30,
+		name: "Jogo de travessas",
+		image: "presentes/travessas.png"
+	},
+	{
+		id: 31,
+		name: "Formas Fundo Removível",
+		image: "presentes/formas.png"
+	},
+	{
+		id: 32,
+		name: "Pano de Prato Neutro",
+		image: "presentes/pano de prato.png"
+	},
+	{
+		id: 33,
+		name: "Boleira",
+		image: "presentes/boleira.png"
+	},
 ];
 
 const giftReservations = JSON.parse(localStorage.getItem("giftReservations")) || {};
