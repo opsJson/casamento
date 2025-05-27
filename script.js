@@ -169,6 +169,21 @@ const gifts = [
 		name: "Fogão",
 		image: "presentes/fogao.png"
 	},
+	{
+		id: 35,
+		name: "Cama Box",
+		image: "presentes/cama.png"
+	},
+	{
+		id: 36,
+		name: "Depurador de Ar",
+		image: "presentes/depurador.png"
+	},
+	{
+		id: 37,
+		name: "Jogo de Taças",
+		image: "presentes/jogo de tacas.png"
+	},
 ];
 
 const giftReservations = JSON.parse(localStorage.getItem("giftReservations")) || {};
