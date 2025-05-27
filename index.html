@@ -496,18 +496,6 @@ body {
         background: #d4a373;
     }
 
-    @media (min-width: 768px) {
-        .carousel-item {
-            min-width: calc(50% - 40px);
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .carousel-item {
-            min-width: calc(33.333% - 40px);
-        }
-    }
-
     /* Prevent image dragging */
     img {
         -webkit-user-drag: none;
@@ -948,7 +936,6 @@ let animationID = 0;
 
 // Update items per slide based on screen size
 function updateItemsPerSlide() {
-	return 1;
     if (window.innerWidth >= 1024) {
         itemsPerSlide = 3;
     } else if (window.innerWidth >= 768) {
@@ -956,6 +943,8 @@ function updateItemsPerSlide() {
     } else {
         itemsPerSlide = 1;
     }
+	
+	itemsPerSlide = 1;
 }
 
 // Initialize carousels
