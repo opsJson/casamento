@@ -164,6 +164,11 @@ const gifts = [
 		name: "Boleira",
 		image: "presentes/boleira.png"
 	},
+	{
+		id: 34,
+		name: "Fogão",
+		image: "presentes/fogao.png"
+	},
 ];
 
 const giftReservations = JSON.parse(localStorage.getItem("giftReservations")) || {};
@@ -218,7 +223,7 @@ document.getElementById("gift-form").addEventListener("submit", async function(e
 	let giverName = document.getElementById("giver-name").value?.trim();
 	if (!giverName) return;
 
-	giverName = giverName[0].toUpperCase() + giverName.slice(1).toLowerCase();
+	giverName = giverName.toLowerCase().split(" ").map(e => e[0].toUpperCase() + e.slice(1)).join(" ");
 
 	await fetch("https://g2gpnwmrawd4jxxfiopm6wkb4a0hlros.lambda-url.sa-east-1.on.aws/add", {
 		method: "POST",
