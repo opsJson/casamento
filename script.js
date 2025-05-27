@@ -174,6 +174,12 @@ const audio = new Audio();
 let isPlaying = false;
 let swiperInstance;
 
+let uuid = localStorage.getItem("uuid");
+if (!uuid) {
+	uuid = crypto.randomUUID();
+	localStorage.setItem("uuid", uuid);
+}
+
 document.getElementById("enter-button").addEventListener("click", function() {
 	document.getElementById("welcome-overlay").classList.add("hidden");
 	document.getElementById("navbar").classList.add("show");
@@ -210,13 +216,21 @@ document.getElementById("gift-form").addEventListener("submit", function(e) {
 	e.preventDefault();
 	
 	const giftId = parseInt(document.getElementById("selected-gift").value);
-	const giverName = document.getElementById("giver-name").value;
+	let giverName = document.getElementById("giver-name").value?.trim();
+	if (!giverName) return;
 	
-	giftReservations[giftId] = { giverName, date: new Date().toISOString() };
+	giverName = giverName[0].toUpperCase() + giverName.slice(1).toLowerCase();
+	
+	giftReservations[giftId] = { giverName, date: new Date().toISOString(), uuid };
 	localStorage.setItem("giftReservations", JSON.stringify(giftReservations));
 	
 	closeModal();
 	renderGiftCarousel();
+	soltarFogos();
+});
+
+window.addEventListener("resize", () => {
+  swiperInstance?.update();
 });
 
 function openModal(giftId) {
@@ -269,53 +283,95 @@ function playSong() {
 }
 
 function renderGiftCarousel() {
-  const track = document.getElementById("gift-carousel-track");
-  track.innerHTML = "";
+	const track = document.getElementById("gift-carousel-track");
+	track.innerHTML = "";
 
-  gifts.forEach(gift => {
-    const isReserved = giftReservations[gift.id];
-    const slide = document.createElement("div");
-    slide.className = "swiper-slide";
-    slide.innerHTML = `
-      <div class="gift-item">
-        <img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
-        <div class="p-4 text-center">
-          <h3 class="title-font text-xl mb-2">${gift.name}</h3>
-          ${isReserved ?
-            `<p class='text-green-600 mb-2'>Reservado por ${isReserved.giverName}</p>
-             <button class='bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed' disabled>Presenteado</button>` :
-            `<button onclick="openModal(${gift.id})" class="mt-2 bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition">Presentear</button>`
-          }
-        </div>
-      </div>
-    `;
-    track.appendChild(slide);
-  });
+	// Separar presentes em dois grupos
+	const reservados = [];
+	const naoReservados = [];
 
-  if (swiperInstance) swiperInstance.destroy(true, true);
+	gifts.forEach(gift => {
+		if (giftReservations[gift.id]) {
+			reservados.push(gift);
+		} else {
+			naoReservados.push(gift);
+		}
+	});
 
-  swiperInstance = new Swiper(".gift-swiper", {
-    slidesPerView: 1,
-    spaceBetween: 16,
-    breakpoints: {
-      640: {
-        slidesPerView: 2
-      },
-      1024: {
-        slidesPerView: 3
-      }
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev"
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true
-    }
-  });
+	// Função para embaralhar os presentes
+	function shuffle(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array;
+	}
+
+	// Embaralhar os dois grupos separadamente
+	const embaralhados = [...shuffle(naoReservados), ...shuffle(reservados)];
+
+	// Renderizar
+	embaralhados.forEach(gift => {
+		const isReserved = giftReservations[gift.id];
+		const slide = document.createElement("div");
+		slide.className = "swiper-slide";
+		slide.innerHTML = `
+			<div class="gift-item">
+				<img src="${gift.image}" alt="${gift.name}" class="w-full h-48 object-cover">
+				<div class="p-4 text-center">
+					<h3 class="title-font text-xl mb-2">${gift.name}</h3>
+					${isReserved ? `
+						<p class='text-green-600 mb-2'>Reservado por ${isReserved.giverName}</p>
+						${isReserved.uuid === uuid
+							? `<button onclick="cancelarPresente(${gift.id})" class="mt-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Cancelar</button>`
+							: `<button class='bg-gray-300 text-gray-700 px-4 py-2 rounded cursor-not-allowed' disabled>Presenteado</button>`
+						}
+					` : `
+						<button onclick="openModal(${gift.id})" class="mt-2 bg-amber-500 text-white px-4 py-2 rounded hover:bg-amber-600 transition">Presentear</button>
+					`}
+				</div>
+			</div>
+		`;
+		track.appendChild(slide);
+	});
+
+	// Recriar o Swiper
+	if (swiperInstance) swiperInstance.destroy(true, true);
+	swiperInstance = new Swiper(".gift-swiper", {
+		slidesPerView: 1,
+		spaceBetween: 16,
+		breakpoints: {
+			640: { slidesPerView: 2 },
+			1024: { slidesPerView: 3 }
+		},
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev"
+		},
+		pagination: {
+			el: ".swiper-pagination",
+			clickable: true
+		}
+	});
 }
 
-window.addEventListener("resize", () => {
-  swiperInstance?.update();
-});
+function soltarFogos() {
+	confetti({
+		particleCount: 150,
+		spread: 70,
+		origin: { y: 0.6 }
+	});
+}
+
+function cancelarPresente(giftId) {
+	if (!confirm("Tem certeza que deseja cancelar sua reserva deste presente?")) return;
+
+	const reserva = giftReservations[giftId];
+	if (reserva?.uuid === uuid) {
+		delete giftReservations[giftId];
+		localStorage.setItem("giftReservations", JSON.stringify(giftReservations));
+		renderGiftCarousel();
+	} else {
+		alert("Você não tem permissão para cancelar essa reserva.");
+	}
+}
