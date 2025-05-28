@@ -6,12 +6,12 @@ const gifts = [
 	},
 	{
 		id: 2,
-		name: "Jogo de copo",
+		name: "Jogo de Copo",
 		image: "presentes/jogo de copo.png"
 	},
 	{
 		id: 3,
-		name: "Jogo de jantar",
+		name: "Jogo de Jantar",
 		image: "presentes/jogo de jantar.png"
 	},
 	{
@@ -31,7 +31,7 @@ const gifts = [
 	},
 	{
 		id: 7,
-		name: "Cafeteira Nespresso",
+		name: "Cafeteira Nespresso Mini",
 		image: "presentes/nespresso.png"
 	},
 	{
@@ -56,12 +56,12 @@ const gifts = [
 	},
 	{
 		id: 12,
-		name: "Aspirador de pó",
+		name: "Aspirador de Pó",
 		image: "presentes/aspirador de po.png"
 	},
 	{
 		id: 13,
-		name: "Ferro de passar",
+		name: "Ferro de Passar",
 		image: "presentes/ferro de passar.png"
 	},
 	{
@@ -121,7 +121,7 @@ const gifts = [
 	},
 	{
 		id: 25,
-		name: "Escorredor de louças",
+		name: "Escorredor de Louças",
 		image: "presentes/escorredor.png"
 	},
 	{
@@ -146,7 +146,7 @@ const gifts = [
 	},
 	{
 		id: 30,
-		name: "Jogo de travessas",
+		name: "Jogo de Travessas",
 		image: "presentes/travessas.png"
 	},
 	{
