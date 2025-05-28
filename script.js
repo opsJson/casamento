@@ -196,7 +196,7 @@ const gifts = [
 	},
 	{
 		id: 40,
-		name: "Utensílios de Cozinhar",
+		name: "Utensílios de Cozinha",
 		image: "presentes/utensilos de cozinha.png"
 	}
 ];
