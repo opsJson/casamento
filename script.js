@@ -188,6 +188,16 @@ const gifts = [
 		id: 38,
 		name: "Kit Churrasco",
 		image: "presentes/kit churrasco.png"
+	},
+	{
+		id: 39,
+		name: "Jogo de Panelas",
+		image: "presentes/jogo de panela.png"
+	},
+	{
+		id: 40,
+		name: "Utensílios de Cozinhar",
+		image: "presentes/utensilos de cozinha.png"
 	}
 ];
 
