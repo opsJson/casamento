@@ -198,6 +198,16 @@ const gifts = [
 		id: 40,
 		name: "Utensílios de Cozinha",
 		image: "presentes/utensilos de cozinha.png"
+	},
+	{
+		id: 41,
+		name: "Noite em Hotel",
+		image: "presentes/hotel.png"
+	},
+	{
+		id: 42,
+		name: "Apartamento",
+		image: "presentes/casa.png"
 	}
 ];
 
